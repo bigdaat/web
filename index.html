@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Big Daat — Desarrollo de Software & Publicidad Digital</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0a0a0f;
+    --near-black: #111118;
+    --surface: #16161e;
+    --surface-2: #1e1e28;
+    --border: rgba(255,255,255,0.07);
+    --border-hover: rgba(255,255,255,0.15);
+    --text: #f0f0f8;
+    --text-muted: rgba(240,240,248,0.5);
+    --text-dim: rgba(240,240,248,0.3);
+    --accent: #7c6ff7;
+    --accent-light: #a99fff;
+    --accent-glow: rgba(124,111,247,0.15);
+    --green: #22d3a0;
+    --green-dim: rgba(34,211,160,0.12);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1.2rem 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(16px);
+  }
+
+  .nav-logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--accent); }
+
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  .nav-cta {
+    background: var(--accent);
+    color: #fff;
+    padding: 0.55rem 1.25rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: opacity 0.2s, transform 0.15s;
+  }
+  .nav-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    padding: 8rem 2rem 5rem;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute; top: -20%; left: 50%; transform: translateX(-50%);
+    width: 700px; height: 700px;
+    background: radial-gradient(ellipse, rgba(124,111,247,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border-hover);
+    border-radius: 100px;
+    padding: 0.4rem 1rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero-badge .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 6px var(--green);
+    animation: pulse 2s ease infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .hero h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.04em;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  .hero h1 .line-accent { color: var(--accent-light); }
+
+  .hero p {
+    max-width: 540px;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .hero-actions {
+    display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    padding: 0.8rem 2rem;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity 0.2s, transform 0.15s;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  .btn-primary:hover { opacity: 0.85; transform: translateY(-2px); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-muted);
+    padding: 0.8rem 2rem;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: none;
+    border: 1px solid var(--border-hover);
+    transition: border-color 0.2s, color 0.2s, transform 0.15s;
+  }
+  .btn-ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.3); transform: translateY(-2px); }
+
+  .hero-stats {
+    display: flex; gap: 3rem; margin-top: 5rem;
+    animation: fadeUp 0.6s 0.5s ease both;
+    flex-wrap: wrap; justify-content: center;
+  }
+  .stat {
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.03em;
+  }
+  .stat-num span { color: var(--accent); }
+  .stat-label {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 0.25rem;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* SECTIONS SHARED */
+  section { padding: 5rem 2rem; }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+
+  .section-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+  .section-sub {
+    font-size: 1rem;
+    color: var(--text-muted);
+    max-width: 520px;
+    line-height: 1.7;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+  }
+
+  /* PRICING */
+  .pricing { background: var(--near-black); }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .price-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    position: relative;
+    transition: border-color 0.25s, transform 0.25s;
+    overflow: hidden;
+  }
+  .price-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-4px);
+  }
+  .price-card.featured {
+    border-color: var(--accent);
+    background: linear-gradient(145deg, var(--surface-2) 0%, rgba(124,111,247,0.06) 100%);
+  }
+  .price-card.featured::before {
+    content: 'Más popular';
+    position: absolute; top: 1.25rem; right: 1.25rem;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.25rem 0.65rem;
+    border-radius: 100px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .price-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    background: var(--accent-glow);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1.25rem;
+    font-size: 1.4rem;
+  }
+
+  .price-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+  }
+  .price-amount {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 3rem;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+  .price-amount sup { font-size: 1.4rem; vertical-align: top; padding-top: 0.4rem; color: var(--accent-light); }
+  .price-period {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    margin-bottom: 1.5rem;
+  }
+
+  .price-features {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 0.65rem;
+    margin-bottom: 1.75rem;
+  }
+  .price-features li {
+    display: flex; align-items: flex-start; gap: 0.6rem;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+  .price-features li::before {
+    content: '✓';
+    color: var(--green);
+    font-weight: 700;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    margin-top: 0.05rem;
+  }
+
+  .price-btn {
+    display: block;
+    text-align: center;
+    padding: 0.75rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity 0.2s, transform 0.15s;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  .price-btn.outline {
+    border: 1px solid var(--border-hover);
+    color: var(--text);
+  }
+  .price-btn.solid {
+    background: var(--accent);
+    color: #fff;
+  }
+  .price-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+
+  .zero-maintenance {
+    margin-top: 2rem;
+    background: var(--green-dim);
+    border: 1px solid rgba(34,211,160,0.2);
+    border-radius: 12px;
+    padding: 1.2rem 1.5rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .zero-maintenance .icon { font-size: 1.5rem; flex-shrink: 0; }
+  .zero-maintenance p { font-size: 0.9rem; color: var(--text-muted); }
+  .zero-maintenance strong { color: var(--green); }
+
+  /* APPS */
+  .apps { background: var(--black); }
+
+  .apps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .app-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: border-color 0.25s, transform 0.25s;
+    text-decoration: none;
+    display: block;
+  }
+  .app-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-5px);
+  }
+
+  .app-card-header {
+    padding: 1.75rem 1.75rem 1.25rem;
+    display: flex; align-items: flex-start; gap: 1rem;
+  }
+
+  .app-logo {
+    width: 52px; height: 52px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem;
+    flex-shrink: 0;
+  }
+
+  .app-info { flex: 1; }
+  .app-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+    letter-spacing: -0.02em;
+  }
+  .app-type {
+    font-size: 0.78rem;
+    color: var(--accent-light);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .app-desc {
+    padding: 0 1.75rem 1.75rem;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+  }
+
+  .app-footer {
+    padding: 1rem 1.75rem;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .app-url {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    font-family: monospace;
+  }
+  .app-arrow {
+    font-size: 0.8rem;
+    color: var(--accent);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  /* CLIENTS */
+  .clients { background: var(--near-black); }
+
+  .clients-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 3rem;
+  }
+
+  .client-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.75rem 1.5rem;
+    text-decoration: none;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 0.75rem;
+    transition: border-color 0.25s, transform 0.25s;
+    text-align: center;
+  }
+  .client-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-3px);
+  }
+
+  .client-logo-wrap {
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--surface-2);
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--border);
+  }
+  .client-logo-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+  .client-logo-wrap .fallback {
+    font-size: 1.4rem;
+  }
+
+  .client-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+  .client-category {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* PROCESS */
+  .process { background: var(--black); }
+
+  .process-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+    position: relative;
+  }
+
+  .step {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.75rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .step:hover { border-color: var(--border-hover); transform: translateY(-3px); }
+
+  .step-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--border-hover);
+    line-height: 1;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.05em;
+  }
+  .step-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+  }
+  .step-desc {
+    font-size: 0.87rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* CTA FINAL */
+  .cta-section {
+    background: var(--near-black);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute; bottom: -30%; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 400px;
+    background: radial-gradient(ellipse, rgba(124,111,247,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-section .section-title { font-size: clamp(2rem, 4vw, 3.5rem); }
+  .cta-section p {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    max-width: 500px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.7;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--black);
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 2rem;
+    text-align: center;
+  }
+  footer .logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.03em;
+    margin-bottom: 0.5rem;
+  }
+  footer .logo span { color: var(--accent); }
+  footer p {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+  }
+
+  /* WHATSAPP FLOAT */
+  .wa-float {
+    position: fixed;
+    bottom: 1.75rem; right: 1.75rem;
+    z-index: 999;
+    display: flex; align-items: center; gap: 0.75rem;
+    background: #25D366;
+    color: #fff;
+    padding: 0.85rem 1.4rem 0.85rem 1.1rem;
+    border-radius: 100px;
+    text-decoration: none;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 20px rgba(37,211,102,0.35);
+    transition: transform 0.2s, box-shadow 0.2s;
+    animation: floatIn 0.7s 0.8s ease both;
+  }
+  .wa-float:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 6px 28px rgba(37,211,102,0.45);
+  }
+  .wa-float svg {
+    width: 22px; height: 22px;
+    flex-shrink: 0;
+  }
+
+  @keyframes floatIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* SCROLL REVEAL */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 680px) {
+    nav { padding: 1rem; }
+    .nav-links { display: none; }
+    .hero { padding: 7rem 1.25rem 4rem; }
+    .hero-stats { gap: 1.5rem; }
+    section { padding: 4rem 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Big <span>Daat</span></a>
+  <ul class="nav-links">
+    <li><a href="#apps">Apps</a></li>
+    <li><a href="#precios">Precios</a></li>
+    <li><a href="#clientes">Clientes</a></li>
+    <li><a href="#proceso">Proceso</a></li>
+  </ul>
+  <a href="https://wa.me/541137991082" target="_blank" class="nav-cta">Hablar ahora</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">
+    <span class="dot"></span>
+    Desarrollo · Software · Publicidad digital
+  </div>
+  <h1>
+    Tu negocio,<br/>
+    <span class="line-accent">potenciado con tecnología.</span>
+  </h1>
+  <p>
+    Desarrollamos apps y sitios web de alto impacto. Sin costos ocultos, sin excusas.
+    Entregamos resultados reales a precios directos.
+  </p>
+  <div class="hero-actions">
+    <a href="https://wa.me/541137991082" target="_blank" class="btn-primary">Empezar mi proyecto</a>
+    <a href="#apps" class="btn-ghost">Ver lo que hacemos</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num"><span>$</span>1000</div>
+      <div class="stat-label">Tu app completa</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num"><span>$</span>500</div>
+      <div class="stat-label">Web profesional</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num"><span>$</span>0</div>
+      <div class="stat-label">Mantenimiento</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- PRECIOS -->
+<section class="pricing" id="precios">
+  <div class="section-inner">
+    <p class="section-label reveal">Precios</p>
+    <h2 class="section-title reveal">Transparentes, sin sorpresas.</h2>
+    <p class="section-sub reveal">Sabés exactamente cuánto vas a pagar antes de arrancar. Sin letras chicas.</p>
+
+    <div class="pricing-grid">
+
+      <div class="price-card reveal">
+        <div class="price-icon">🌐</div>
+        <div class="price-name">Sitio Web</div>
+        <div class="price-amount"><sup>$</sup>500</div>
+        <div class="price-period">USD · pago único</div>
+        <ul class="price-features">
+          <li>Diseño personalizado y responsive</li>
+          <li>Hasta 6 secciones o páginas</li>
+          <li>Formulario de contacto activo</li>
+          <li>SEO básico incluido</li>
+          <li>Entrega en 7–10 días hábiles</li>
+        </ul>
+        <a href="https://wa.me/541137991082?text=Hola!%20Me%20interesa%20un%20sitio%20web" target="_blank" class="price-btn outline">Consultar</a>
+      </div>
+
+      <div class="price-card featured reveal">
+        <div class="price-icon">📱</div>
+        <div class="price-name">App Mobile / Web App</div>
+        <div class="price-amount"><sup>$</sup>1000</div>
+        <div class="price-period">USD · pago único</div>
+        <ul class="price-features">
+          <li>App nativa o PWA instalable</li>
+          <li>Login con Google, geolocalización</li>
+          <li>Base de datos en tiempo real</li>
+          <li>Notificaciones y modo offline</li>
+          <li>Publicación en stores incluida</li>
+        </ul>
+        <a href="https://wa.me/541137991082?text=Hola!%20Me%20interesa%20una%20app" target="_blank" class="price-btn solid">Quiero mi app</a>
+      </div>
+
+      <div class="price-card reveal">
+        <div class="price-icon">📣</div>
+        <div class="price-name">Redes Sociales</div>
+        <div class="price-amount" style="font-size:2rem;">A medida</div>
+        <div class="price-period">según volumen y alcance</div>
+        <ul class="price-features">
+          <li>Estrategia de contenido mensual</li>
+          <li>Diseño de piezas gráficas</li>
+          <li>Gestión de Instagram y más</li>
+          <li>Reportes de métricas</li>
+          <li>Crecimiento orgánico</li>
+        </ul>
+        <a href="https://wa.me/541137991082?text=Hola!%20Me%20interesa%20manejo%20de%20redes" target="_blank" class="price-btn outline">Consultar</a>
+      </div>
+
+    </div>
+
+    <div class="zero-maintenance reveal">
+      <span class="icon">✨</span>
+      <p><strong>Mantenimiento $0</strong> — Una vez que tu proyecto está entregado, no te cobramos por mantenerlo activo. El costo puede variar según la complejidad del proyecto, pero siempre lo hablamos antes.</p>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- APPS -->
+<section class="apps" id="apps">
+  <div class="section-inner">
+    <p class="section-label reveal">Nuestras apps</p>
+    <h2 class="section-title reveal">Productos que ya están funcionando.</h2>
+    <p class="section-sub reveal">Apps reales, usadas por personas reales. Esto es lo que construimos.</p>
+
+    <div class="apps-grid">
+
+      <a href="https://cebate.uno/" target="_blank" class="app-card reveal">
+        <div class="app-card-header">
+          <div class="app-logo" style="background: rgba(15,123,94,0.18);">🧉</div>
+          <div class="app-info">
+            <div class="app-name">Cebate Uno</div>
+            <div class="app-type">PWA · Comunidad</div>
+          </div>
+        </div>
+        <div class="app-desc">
+          Plataforma social para encontrar mateadas en el parque. Geolocalización en tiempo real, login con Google, lista de espera y modo offline. Instalable como app nativa.
+        </div>
+        <div class="app-footer">
+          <span class="app-url">cebate.uno</span>
+          <span class="app-arrow">Ver app →</span>
+        </div>
+      </a>
+
+      <a href="https://tumanoa.uno/" target="_blank" class="app-card reveal">
+        <div class="app-card-header">
+          <div class="app-logo" style="background: rgba(91,171,204,0.18);">🤝</div>
+          <div class="app-info">
+            <div class="app-name">Tu Mano a Uno</div>
+            <div class="app-type">PWA · Solidaridad</div>
+          </div>
+        </div>
+        <div class="app-desc">
+          Red de ayuda comunitaria. Conecta a personas que necesitan o pueden ofrecer ayuda en su ciudad. Publicaciones geolocalizadas, contacto por WhatsApp y filtros por rubro.
+        </div>
+        <div class="app-footer">
+          <span class="app-url">tumanoa.uno</span>
+          <span class="app-arrow">Ver app →</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- CLIENTES -->
+<section class="clients" id="clientes">
+  <div class="section-inner">
+    <p class="section-label reveal">Clientes</p>
+    <h2 class="section-title reveal">Empresas que confían en nosotros.</h2>
+    <p class="section-sub reveal">Desde estudios de arquitectura hasta cafeterías y gimnasios, acompañamos negocios de todos los rubros.</p>
+
+    <div class="clients-grid">
+
+      <a href="https://estudiocdw.com/" target="_blank" class="client-card reveal">
+        <div class="client-logo-wrap">
+          <img src="https://estudiocdw.com/assets/images/logo.png" alt="Estudio CDW" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+          <span class="fallback" style="display:none">🏛️</span>
+        </div>
+        <div class="client-name">Estudio CDW</div>
+        <div class="client-category">Arquitectura · Web</div>
+      </a>
+
+      <a href="https://www.instagram.com/gimnasioclubitaliano" target="_blank" class="client-card reveal">
+        <div class="client-logo-wrap">
+          <img src="https://unavatar.io/instagram/gimnasioclubitaliano" alt="Gimnasio Club Italiano" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+          <span class="fallback" style="display:none">🏋️</span>
+        </div>
+        <div class="client-name">Club Italiano</div>
+        <div class="client-category">Deporte · Redes sociales</div>
+      </a>
+
+      <a href="https://www.instagram.com/matok.cafe" target="_blank" class="client-card reveal">
+        <div class="client-logo-wrap">
+          <img src="https://unavatar.io/instagram/matok.cafe" alt="Matok Café" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+          <span class="fallback" style="display:none">☕</span>
+        </div>
+        <div class="client-name">Matok Café</div>
+        <div class="client-category">Gastronomía · Redes sociales</div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- PROCESO -->
+<section class="process" id="proceso">
+  <div class="section-inner">
+    <p class="section-label reveal">Cómo trabajamos</p>
+    <h2 class="section-title reveal">Del concepto al lanzamiento.</h2>
+    <p class="section-sub reveal">Un proceso directo y sin burocracia, pensado para que tengas resultados rápido.</p>
+
+    <div class="process-steps">
+      <div class="step reveal">
+        <div class="step-num">01</div>
+        <div class="step-title">Charla inicial</div>
+        <div class="step-desc">Me contás tu idea por WhatsApp. Sin formularios, sin esperas. Entiendo qué necesitás en una sola charla.</div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">02</div>
+        <div class="step-title">Propuesta clara</div>
+        <div class="step-desc">Te mando una propuesta con alcance, tiempo y precio exacto. Sin sorpresas a mitad del camino.</div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">03</div>
+        <div class="step-title">Desarrollo ágil</div>
+        <div class="step-desc">Trabajo en sprints cortos y te muestro avances. Podés dar feedback en cada etapa.</div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">04</div>
+        <div class="step-title">Lanzamiento</div>
+        <div class="step-desc">Publicamos tu proyecto. Quedás con todo el código y el acceso. Sin dependencia.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- CTA FINAL -->
+<section class="cta-section">
+  <div class="section-inner reveal">
+    <p class="section-label">¿Listo?</p>
+    <h2 class="section-title">Arrancá hoy mismo.</h2>
+    <p>Tu app por $1000. Tu web por $500. Mantenimiento cero. Hablemos por WhatsApp y en minutos tenés una propuesta.</p>
+    <a href="https://wa.me/541137991082?text=Hola!%20Quiero%20arrancar%20mi%20proyecto%20con%20Big%20Daat" target="_blank" class="btn-primary" style="font-size:1.05rem; padding: 1rem 2.5rem;">
+      Empezar ahora →
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo">Big <span>Daat</span></div>
+  <p>Desarrollo de Software & Publicidad Digital · Buenos Aires, Argentina</p>
+</footer>
+
+<!-- WHATSAPP FLOAT -->
+<a href="https://wa.me/541137991082" target="_blank" class="wa-float" aria-label="Contactar por WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+  Hablemos
+</a>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => {
+        entry.target.classList.add('visible');
+      }, 60);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
