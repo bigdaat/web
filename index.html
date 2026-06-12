@@ -233,6 +233,183 @@
     border-top: 1px solid var(--border);
   }
 
+  /* GENERADOR DE BRIEF */
+  .brief-gen { background: var(--near-black); }
+
+  .brief-form {
+    margin-top: 2.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+  }
+
+  .brief-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 640px) { .brief-grid { grid-template-columns: 1fr; } }
+
+  .bf-field { display: flex; flex-direction: column; gap: .45rem; }
+  .bf-full { grid-column: 1 / -1; }
+
+  .bf-field label {
+    font-size: .78rem;
+    color: var(--text-muted);
+    letter-spacing: .04em;
+  }
+
+  .bf-field input,
+  .bf-field select,
+  .bf-field textarea {
+    background: var(--near-black);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: .9rem;
+    padding: .65rem 1rem;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: border-color .2s;
+  }
+  .bf-field input:focus,
+  .bf-field select:focus,
+  .bf-field textarea:focus { border-color: var(--accent); }
+  .bf-field select option { background: var(--near-black); }
+  .bf-field textarea { resize: vertical; min-height: 80px; }
+
+  .bf-submit { margin-top: .5rem; }
+
+  .bf-loader {
+    display: none;
+    margin-top: 1.25rem;
+    color: var(--text-muted);
+    font-size: .9rem;
+  }
+  .bd-dots::after {
+    content: '';
+    animation: bdots 1.2s steps(4, end) infinite;
+  }
+  @keyframes bdots {
+    0%,20%{content:''}40%{content:'.'}60%{content:'..'}80%,100%{content:'...'}
+  }
+
+  /* RESULTADO */
+  .bf-result {
+    display: none;
+    position: relative;
+    margin-top: 2rem;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .bf-result-inner {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    filter: blur(4px);
+    user-select: none;
+    pointer-events: none;
+  }
+
+  .bf-section { margin-bottom: 1.75rem; }
+  .bf-section:last-child { margin-bottom: 0; }
+  .bf-section-label {
+    font-size: .72rem;
+    text-transform: uppercase;
+    letter-spacing: .15em;
+    color: var(--accent);
+    margin-bottom: .75rem;
+    font-weight: 500;
+  }
+  .bf-text {
+    font-size: .95rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+  .bf-palette { display: flex; gap: .75rem; flex-wrap: wrap; }
+  .bf-swatch-wrap { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+  .bf-swatch { width: 48px; height: 48px; border-radius: 10px; }
+  .bf-swatch-name { font-size: .65rem; color: var(--text-dim); text-align: center; max-width: 56px; }
+  .bf-tags { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .bf-tag {
+    background: rgba(124,111,247,.12);
+    color: var(--accent-light);
+    border-radius: 6px;
+    padding: .25rem .7rem;
+    font-size: .8rem;
+  }
+
+  /* PAYWALL */
+  .bf-paywall {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(10,10,15,.65);
+    backdrop-filter: blur(2px);
+    border-radius: 16px;
+  }
+
+  .bf-paywall-box {
+    background: var(--surface-2);
+    border: 1px solid var(--border-hover);
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    max-width: 360px;
+    width: 90%;
+  }
+  .bf-lock { font-size: 2.2rem; margin-bottom: .75rem; }
+  .bf-paywall-box h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: .6rem;
+    letter-spacing: -.02em;
+  }
+  .bf-paywall-box p {
+    font-size: .9rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+  }
+  .bf-price-tag {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--accent-light);
+    letter-spacing: -.03em;
+    margin-bottom: 1.25rem;
+  }
+  .bf-price-tag span { font-size: 1rem; color: var(--text-dim); font-weight: 400; }
+
+  .bf-pay-btn {
+    display: block;
+    background: #009ee3;
+    color: #fff;
+    padding: .85rem 1.5rem;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    text-decoration: none;
+    font-family: 'Space Grotesk', sans-serif;
+    transition: opacity .2s, transform .15s;
+    margin-bottom: .85rem;
+  }
+  .bf-pay-btn:hover { opacity: .88; transform: translateY(-1px); }
+
+  .bf-paywall-sub {
+    font-size: .75rem;
+    color: var(--text-dim);
+    letter-spacing: .02em;
+  }
+
   /* PRICING */
   .pricing { background: var(--near-black); }
 
@@ -742,6 +919,103 @@
     <div class="zero-maintenance reveal">
       <span class="icon">✨</span>
       <p><strong>Mantenimiento $0</strong> — Una vez que tu proyecto está entregado, no te cobramos por mantenerlo activo. El costo puede variar según la complejidad del proyecto, pero siempre lo hablamos antes.</p>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- GENERADOR DE BRIEF -->
+<section class="brief-gen" id="brief">
+  <div class="section-inner">
+    <p class="section-label reveal">Herramienta gratuita</p>
+    <h2 class="section-title reveal">Generá el brief de tu proyecto con IA.</h2>
+    <p class="section-sub reveal">Completá los datos de tu negocio y la IA te arma un brief profesional con paleta de colores y estructura recomendada. Descargalo por $30.000 ARS.</p>
+
+    <div class="brief-form reveal">
+      <div class="brief-grid">
+        <div class="bf-field">
+          <label>Nombre del negocio</label>
+          <input type="text" id="bf-name" placeholder="Ej: Café Molino, Estudio Vega...">
+        </div>
+        <div class="bf-field">
+          <label>Rubro</label>
+          <select id="bf-rubro">
+            <option value="">— Elegí uno —</option>
+            <option>Gastronomía / Café</option>
+            <option>Moda / Indumentaria</option>
+            <option>Salud / Bienestar</option>
+            <option>Deporte / Gym</option>
+            <option>Arquitectura / Diseño</option>
+            <option>Tecnología / Software</option>
+            <option>Educación</option>
+            <option>E-commerce</option>
+            <option>Servicios profesionales</option>
+            <option>Arte / Fotografía</option>
+            <option>Otro</option>
+          </select>
+        </div>
+        <div class="bf-field">
+          <label>¿Qué necesitás?</label>
+          <select id="bf-producto">
+            <option value="">— Elegí uno —</option>
+            <option>Sitio web</option>
+            <option>App mobile</option>
+            <option>Gestión de redes sociales</option>
+            <option>Tienda online</option>
+            <option>Sistema a medida</option>
+          </select>
+        </div>
+        <div class="bf-field">
+          <label>Estilo visual</label>
+          <select id="bf-estilo">
+            <option>Minimalista y elegante</option>
+            <option>Moderno y tecnológico</option>
+            <option>Cálido y artesanal</option>
+            <option>Oscuro y premium</option>
+            <option>Colorido y juvenil</option>
+            <option>Corporativo y serio</option>
+          </select>
+        </div>
+        <div class="bf-field bf-full">
+          <label>Contanos más sobre tu negocio (opcional)</label>
+          <textarea id="bf-extra" placeholder="Ej: Tenemos una cafetería en Palermo, queremos atraer clientes jóvenes y mostrar nuestro menú..."></textarea>
+        </div>
+      </div>
+
+      <button class="btn-primary bf-submit" id="bf-btn" onclick="bdGenerar()">Generar brief con IA →</button>
+      <div class="bf-loader" id="bf-loader">Generando tu brief con IA<span class="bd-dots"></span></div>
+    </div>
+
+    <!-- RESULTADO BLOQUEADO -->
+    <div class="bf-result" id="bf-result">
+      <div class="bf-result-inner">
+        <div class="bf-section">
+          <div class="bf-section-label">Tu brief</div>
+          <p class="bf-text" id="bf-brieftext"></p>
+        </div>
+        <div class="bf-section">
+          <div class="bf-section-label">Paleta de colores</div>
+          <div class="bf-palette" id="bf-palette"></div>
+        </div>
+        <div class="bf-section">
+          <div class="bf-section-label">Secciones recomendadas</div>
+          <div class="bf-tags" id="bf-tags"></div>
+        </div>
+      </div>
+
+      <!-- PAYWALL OVERLAY -->
+      <div class="bf-paywall" id="bf-paywall">
+        <div class="bf-paywall-box">
+          <div class="bf-lock">🔒</div>
+          <h3>Tu brief está listo</h3>
+          <p>Pagá $30.000 ARS para descargarlo completo en PDF o recibirlo por WhatsApp.</p>
+          <div class="bf-price-tag">$30.000 <span>ARS</span></div>
+          <a href="https://mpago.la/2oTyuhs" target="_blank" class="bf-pay-btn" onclick="bdDesbloquear()">Pagar con Mercado Pago →</a>
+          <div class="bf-paywall-sub">Pago seguro · Mercado Pago · Acreditación inmediata</div>
+        </div>
+      </div>
     </div>
 
   </div>
