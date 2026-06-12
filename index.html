@@ -1187,6 +1187,101 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.12 });
 
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+async function bdGenerar() {
+  const name    = document.getElementById('bf-name').value.trim();
+  const rubro   = document.getElementById('bf-rubro').value;
+  const producto= document.getElementById('bf-producto').value;
+  const estilo  = document.getElementById('bf-estilo').value;
+  const extra   = document.getElementById('bf-extra').value.trim();
+
+  if (!name || !rubro || !producto) {
+    alert('Por favor completá al menos el nombre del negocio, el rubro y qué necesitás.');
+    return;
+  }
+
+  const btn    = document.getElementById('bf-btn');
+  const loader = document.getElementById('bf-loader');
+  const result = document.getElementById('bf-result');
+
+  btn.style.display    = 'none';
+  loader.style.display = 'block';
+  result.style.display = 'none';
+
+  const prompt = `Sos un experto en branding y diseño web. Generá un brief profesional en español para el siguiente negocio:
+
+Negocio: ${name}
+Rubro: ${rubro}
+Producto/servicio necesario: ${producto}
+Estilo visual preferido: ${estilo}
+${extra ? `Información adicional: ${extra}` : ''}
+
+Respondé ÚNICAMENTE con un objeto JSON válido (sin markdown, sin backticks, sin texto extra) con esta estructura exacta:
+{
+  "brief": "Párrafo de 4-6 oraciones describiendo el proyecto, tono de marca, público objetivo y propuesta de valor.",
+  "paleta": [
+    {"hex": "#HEXCOLOR", "nombre": "Nombre del color"},
+    {"hex": "#HEXCOLOR", "nombre": "Nombre del color"},
+    {"hex": "#HEXCOLOR", "nombre": "Nombre del color"},
+    {"hex": "#HEXCOLOR", "nombre": "Nombre del color"}
+  ],
+  "secciones": ["Sección 1", "Sección 2", "Sección 3", "Sección 4", "Sección 5", "Sección 6"]
+}`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    const data = await res.json();
+    const text = data.content.map(i => i.text || '').join('');
+    const clean = text.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(clean);
+
+    // Brief text
+    document.getElementById('bf-brieftext').textContent = parsed.brief;
+
+    // Paleta
+    const paletteEl = document.getElementById('bf-palette');
+    paletteEl.innerHTML = '';
+    parsed.paleta.forEach(c => {
+      paletteEl.innerHTML += `
+        <div class="bf-swatch-wrap">
+          <div class="bf-swatch" style="background:${c.hex};" title="${c.hex}"></div>
+          <div class="bf-swatch-name">${c.nombre}<br><span style="font-size:.6rem;opacity:.6">${c.hex}</span></div>
+        </div>`;
+    });
+
+    // Secciones
+    const tagsEl = document.getElementById('bf-tags');
+    tagsEl.innerHTML = '';
+    parsed.secciones.forEach(s => {
+      tagsEl.innerHTML += `<span class="bf-tag">${s}</span>`;
+    });
+
+    loader.style.display = 'none';
+    result.style.display = 'block';
+
+  } catch (err) {
+    console.error(err);
+    loader.style.display = 'none';
+    btn.style.display = 'inline-block';
+    alert('Hubo un error generando el brief. Por favor intentá de nuevo.');
+  }
+}
+
+function bdDesbloquear() {
+  // Se llama al hacer click en el botón de pago.
+  // La lógica real de desbloqueo ocurre del lado del servidor
+  // (webhook de Mercado Pago). Por ahora simplemente abrimos el link de pago.
+  // Podés conectar un webhook para desbloquear automáticamente tras el pago.
+}
 </script>
 
 </body>
